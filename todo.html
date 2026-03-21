@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>チェックリスト & やりたいことリスト</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 16px;
+      gap: 20px;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex: 1;
+      min-width: 280px;
+      max-width: 420px;
+    }
+
+    .panel {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.1);
+      width: 100%;
+      padding: 28px;
+      height: fit-content;
+    }
+
+    .panel-header {
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .date {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .accent-daily h2 { color: #4f46e5; }
+    .accent-want h2  { color: #0891b2; }
+    .accent-today h2 { color: #d97706; }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .input-row input {
+      flex: 1;
+      padding: 9px 12px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .accent-daily .input-row input:focus { border-color: #4f46e5; }
+    .accent-want  .input-row input:focus { border-color: #0891b2; }
+    .accent-today .input-row input:focus { border-color: #d97706; }
+
+    .input-row button {
+      padding: 9px 16px;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .accent-daily .input-row button { background: #4f46e5; }
+    .accent-daily .input-row button:hover { background: #4338ca; }
+    .accent-want  .input-row button { background: #0891b2; }
+    .accent-want  .input-row button:hover { background: #0e7490; }
+    .accent-today .input-row button { background: #d97706; }
+    .accent-today .input-row button:hover { background: #b45309; }
+
+    .item-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      transition: opacity 0.2s;
+    }
+
+    .item.done {
+      opacity: 0.45;
+    }
+
+    .item input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .accent-daily .item input[type="checkbox"] { accent-color: #4f46e5; }
+    .accent-want  .item input[type="checkbox"] { accent-color: #0891b2; }
+    .accent-today .item input[type="checkbox"] { accent-color: #d97706; }
+
+    .item .text {
+      flex: 1;
+      font-size: 0.9rem;
+      color: #1a1a1a;
+      word-break: break-word;
+    }
+
+    .item.done .text {
+      text-decoration: line-through;
+      color: #9ca3af;
+    }
+
+    .item .delete-btn {
+      background: none;
+      border: none;
+      color: #d1d5db;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 2px 5px;
+      border-radius: 4px;
+      line-height: 1;
+      transition: color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .item .delete-btn:hover {
+      color: #ef4444;
+    }
+
+    .empty {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 0.88rem;
+      padding: 24px 0;
+    }
+
+    .summary {
+      margin-top: 14px;
+      font-size: 0.82rem;
+      color: #9ca3af;
+      text-align: right;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .accent-daily .badge { background: #ede9fe; color: #4f46e5; }
+    .accent-want  .badge { background: #cffafe; color: #0891b2; }
+    .accent-today .badge { background: #fef3c7; color: #d97706; }
+
+    .divider-btn {
+      width: 100%;
+      padding: 6px;
+      margin-bottom: 20px;
+      background: none;
+      border: 1.5px dashed #d1d5db;
+      border-radius: 8px;
+      color: #9ca3af;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .divider-btn:hover { border-color: #9ca3af; color: #6b7280; }
+
+    .item.divider {
+      border: none;
+      padding: 0;
+      height: 1px;
+      background: #e5e7eb;
+      border-radius: 0;
+      pointer-events: none;
+    }
+    .item.divider .delete-btn {
+      pointer-events: all;
+    }
+    .item.divider:hover .delete-btn { opacity: 1; }
+    .item.divider .delete-btn { opacity: 0; transition: opacity 0.2s; }
+    .item.divider:hover { background: #e5e7eb; }
+    li.item.divider { display: flex; align-items: center; gap: 4px; height: 16px; background: none; }
+    li.item.divider hr { flex: 1; border: none; border-top: 1.5px dashed #d1d5db; }
+  </style>
+</head>
+<body>
+
+  <div class="col">
+
+  <!-- 毎日チェックリスト -->
+  <div class="panel accent-daily">
+    <div class="panel-header">
+      <h2>毎日チェックリスト <span class="badge">毎日リセット</span></h2>
+      <div class="date" id="dateLabel"></div>
+    </div>
+    <div class="input-row">
+      <input type="text" id="dailyInput" placeholder="新しい項目を入力..." />
+      <button onclick="addDaily()">追加</button>
+    </div>
+    <button class="divider-btn" onclick="addDailyDivider()">― 区切り線を追加 ―</button>
+    <ul class="item-list" id="dailyList"></ul>
+    <div class="summary" id="dailySummary"></div>
+  </div>
+
+  <!-- 今日やりたいことリスト -->
+  <div class="panel accent-today">
+    <div class="panel-header">
+      <h2>今日やりたいことリスト <span class="badge">翌日クリア</span></h2>
+      <div class="date" id="todayDateLabel"></div>
+    </div>
+    <div class="input-row">
+      <input type="text" id="todayInput" placeholder="今日やりたいことを入力..." />
+      <button onclick="addToday()">追加</button>
+    </div>
+    <button class="divider-btn" onclick="addTodayDivider()">― 区切り線を追加 ―</button>
+    <ul class="item-list" id="todayList"></ul>
+    <div class="summary" id="todaySummary"></div>
+  </div>
+
+  </div><!-- /col -->
+  <div class="col">
+
+  <!-- やりたいことリスト -->
+  <div class="panel accent-want">
+    <div class="panel-header">
+      <h2>やりたいことリスト</h2>
+      <div class="date">完了したものを削除するまで残ります</div>
+    </div>
+    <div class="input-row">
+      <input type="text" id="wantInput" placeholder="やりたいことを入力..." />
+      <button onclick="addWant()">追加</button>
+    </div>
+    <button class="divider-btn" onclick="addWantDivider()">― 区切り線を追加 ―</button>
+    <ul class="item-list" id="wantList"></ul>
+    <div class="summary" id="wantSummary"></div>
+  </div>
+
+  </div><!-- /col -->
+
+  <script>
+    // ── 毎日チェックリスト ──
+    const TODAY_STR = new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
+    const _d = new Date();
+    const DATE_KEY  = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,'0')}-${String(_d.getDate()).padStart(2,'0')}`;
+    const DAILY_KEY = 'daily_checklist';
+
+    let dailyData = JSON.parse(localStorage.getItem(DAILY_KEY) || '{}');
+    if (dailyData.date !== DATE_KEY) {
+      dailyData = {
+        date: DATE_KEY,
+        tasks: (dailyData.tasks || []).map(t => ({ ...t, done: false }))
+      };
+    }
+    let dailyTasks = dailyData.tasks;
+    saveDaily();
+
+    function saveDaily() {
+      dailyData.tasks = dailyTasks;
+      dailyData.date  = DATE_KEY;
+      localStorage.setItem(DAILY_KEY, JSON.stringify(dailyData));
+    }
+
+    function renderDaily() {
+      document.getElementById('dateLabel').textContent = TODAY_STR;
+      const list = document.getElementById('dailyList');
+      const real = dailyTasks.filter(t => !t.divider);
+      list.innerHTML = dailyTasks.length === 0
+        ? '<li class="empty">項目がありません</li>'
+        : dailyTasks.map(t => t.divider
+            ? `<li class="item divider"><hr /><button class="delete-btn" onclick="deleteDaily(${t.id})" title="削除">&#x2715;</button></li>`
+            : `<li class="item ${t.done ? 'done' : ''}">
+                <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleDaily(${t.id})" />
+                <span class="text">${esc(t.text)}</span>
+                <button class="delete-btn" onclick="deleteDaily(${t.id})" title="削除">&#x2715;</button>
+               </li>`).join('');
+      const done = real.filter(t => t.done).length;
+      document.getElementById('dailySummary').textContent =
+        real.length > 0 ? `${done} / ${real.length} 件完了` : '';
+    }
+
+    function addDaily() {
+      const input = document.getElementById('dailyInput');
+      const text = input.value.trim();
+      if (!text) return;
+      dailyTasks.push({ id: Date.now(), text, done: false });
+      input.value = '';
+      saveDaily(); renderDaily();
+    }
+
+    function addDailyDivider() {
+      dailyTasks.push({ id: Date.now(), divider: true });
+      saveDaily(); renderDaily();
+    }
+
+    function toggleDaily(id) {
+      const t = dailyTasks.find(t => t.id === id);
+      if (t) t.done = !t.done;
+      saveDaily(); renderDaily();
+    }
+
+    function deleteDaily(id) {
+      dailyTasks = dailyTasks.filter(t => t.id !== id);
+      saveDaily(); renderDaily();
+    }
+
+    // ── 今日やりたいことリスト ──
+    const TODAY_LIST_KEY = 'today_list';
+    let todayData = JSON.parse(localStorage.getItem(TODAY_LIST_KEY) || '{}');
+    if (todayData.date !== DATE_KEY) {
+      todayData = { date: DATE_KEY, tasks: [] };
+    }
+    let todayTasks = todayData.tasks;
+    saveToday();
+
+    function saveToday() {
+      todayData.tasks = todayTasks;
+      todayData.date  = DATE_KEY;
+      localStorage.setItem(TODAY_LIST_KEY, JSON.stringify(todayData));
+    }
+
+    function renderToday() {
+      document.getElementById('todayDateLabel').textContent = TODAY_STR;
+      const list = document.getElementById('todayList');
+      const real = todayTasks.filter(t => !t.divider);
+      list.innerHTML = todayTasks.length === 0
+        ? '<li class="empty">今日やることを追加してみよう</li>'
+        : todayTasks.map(t => t.divider
+            ? `<li class="item divider"><hr /><button class="delete-btn" onclick="deleteToday(${t.id})" title="削除">&#x2715;</button></li>`
+            : `<li class="item ${t.done ? 'done' : ''}">
+                <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleToday(${t.id})" />
+                <span class="text">${esc(t.text)}</span>
+                <button class="delete-btn" onclick="deleteToday(${t.id})" title="削除">&#x2715;</button>
+               </li>`).join('');
+      const done = real.filter(t => t.done).length;
+      document.getElementById('todaySummary').textContent =
+        real.length > 0 ? `${done} / ${real.length} 件完了` : '';
+    }
+
+    function addToday() {
+      const input = document.getElementById('todayInput');
+      const text = input.value.trim();
+      if (!text) return;
+      todayTasks.push({ id: Date.now(), text, done: false });
+      input.value = '';
+      saveToday(); renderToday();
+    }
+
+    function addTodayDivider() {
+      todayTasks.push({ id: Date.now(), divider: true });
+      saveToday(); renderToday();
+    }
+
+    function toggleToday(id) {
+      const t = todayTasks.find(t => t.id === id);
+      if (t) t.done = !t.done;
+      saveToday(); renderToday();
+    }
+
+    function deleteToday(id) {
+      todayTasks = todayTasks.filter(t => t.id !== id);
+      saveToday(); renderToday();
+    }
+
+    // ── やりたいことリスト ──
+    const WANT_KEY = 'want_list';
+    let wantTasks = JSON.parse(localStorage.getItem(WANT_KEY) || '[]');
+
+    function saveWant() {
+      localStorage.setItem(WANT_KEY, JSON.stringify(wantTasks));
+    }
+
+    function renderWant() {
+      const list = document.getElementById('wantList');
+      const real = wantTasks.filter(t => !t.divider);
+      list.innerHTML = wantTasks.length === 0
+        ? '<li class="empty">やりたいことを追加してみよう</li>'
+        : wantTasks.map(t => t.divider
+            ? `<li class="item divider"><hr /><button class="delete-btn" onclick="deleteWant(${t.id})" title="削除">&#x2715;</button></li>`
+            : `<li class="item ${t.done ? 'done' : ''}">
+                <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleWant(${t.id})" />
+                <span class="text">${esc(t.text)}</span>
+                <button class="delete-btn" onclick="deleteWant(${t.id})" title="削除">&#x2715;</button>
+               </li>`).join('');
+      const done = real.filter(t => t.done).length;
+      document.getElementById('wantSummary').textContent =
+        real.length > 0 ? `${done} / ${real.length} 件達成` : '';
+    }
+
+    function addWant() {
+      const input = document.getElementById('wantInput');
+      const text = input.value.trim();
+      if (!text) return;
+      wantTasks.push({ id: Date.now(), text, done: false });
+      input.value = '';
+      saveWant(); renderWant();
+    }
+
+    function addWantDivider() {
+      wantTasks.push({ id: Date.now(), divider: true });
+      saveWant(); renderWant();
+    }
+
+    function toggleWant(id) {
+      const t = wantTasks.find(t => t.id === id);
+      if (t) t.done = !t.done;
+      saveWant(); renderWant();
+    }
+
+    function deleteWant(id) {
+      wantTasks = wantTasks.filter(t => t.id !== id);
+      saveWant(); renderWant();
+    }
+
+    // ── 共通 ──
+    function esc(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    let dailyLastEnter = false;
+    document.getElementById('dailyInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (dailyLastEnter) { addDaily(); dailyLastEnter = false; }
+        else { dailyLastEnter = true; }
+      } else { dailyLastEnter = false; }
+    });
+
+    let wantLastEnter = false;
+    document.getElementById('wantInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (wantLastEnter) { addWant(); wantLastEnter = false; }
+        else { wantLastEnter = true; }
+      } else { wantLastEnter = false; }
+    });
+
+    let todayLastEnter = false;
+    document.getElementById('todayInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (todayLastEnter) { addToday(); todayLastEnter = false; }
+        else { todayLastEnter = true; }
+      } else { todayLastEnter = false; }
+    });
+
+    renderDaily();
+    renderToday();
+    renderWant();
+  </script>
+</body>
+</html>
