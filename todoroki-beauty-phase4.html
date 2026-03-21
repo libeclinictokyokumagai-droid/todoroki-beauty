@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>とどろきLAクリニック 美容部門 Phase 4プロジェクト</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2;
+    --warm-white: #fffef9;
+    --blush: #e8c4b8;
+    --rose: #c4796a;
+    --deep-rose: #8b4a40;
+    --gold: #c9a96e;
+    --gold-light: #e8d5b0;
+    --charcoal: #2a2420;
+    --warm-gray: #6b5e58;
+    --light-gray: #ede8e3;
+    --sage: #8a9e8c;
+    --navy: #1a2744;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gold-light);
+    padding: 0 40px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .header-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 400; letter-spacing: 0.08em; color: var(--deep-rose);
+  }
+  .header-brand span {
+    color: var(--warm-gray); font-size: 13px;
+    font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
+    letter-spacing: 0.1em; margin-left: 16px;
+  }
+  .header-updated { font-size: 12px; color: var(--warm-gray); letter-spacing: 0.05em; }
+
+  /* ── NAV ── */
+  .nav-bar {
+    position: fixed; top: 64px; left: 0; right: 0; z-index: 99;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--light-gray);
+    display: flex; padding: 0 40px; overflow-x: auto;
+  }
+  .nav-bar a {
+    display: block; padding: 14px 20px;
+    font-size: 13px; letter-spacing: 0.08em; color: var(--warm-gray);
+    text-decoration: none; white-space: nowrap;
+    border-bottom: 2px solid transparent; transition: all 0.2s;
+  }
+  .nav-bar a:hover { color: var(--rose); border-bottom-color: var(--rose); }
+
+  /* ── HERO ── */
+  .hero {
+    margin-top: 110px; padding: 80px 40px 60px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -60px; left: 50%;
+    transform: translateX(-50%); width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(232,196,184,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow { font-size: 12px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
+  .hero-title { font-family: 'Shippori Mincho', serif; font-size: clamp(28px,4.5vw,48px); font-weight: 600; letter-spacing: 0.05em; line-height: 1.3; color: var(--charcoal); margin-bottom: 16px; }
+  .hero-title em { font-style: normal; color: var(--rose); }
+  .hero-sub { font-size: 14px; color: var(--warm-gray); letter-spacing: 0.08em; margin-bottom: 24px; }
+  .hero-phase-badge { display: inline-block; padding: 10px 28px; border-radius: 40px; background: linear-gradient(135deg, rgba(201,169,110,0.15), rgba(232,196,184,0.25)); border: 1px solid var(--gold); font-size: 13px; color: #7a5a28; letter-spacing: 0.1em; font-weight: 500; }
+
+  /* ── SECTION ── */
+  .section { max-width: 900px; margin: 0 auto; padding: 64px 40px; }
+  .section + .section { border-top: 1px solid var(--light-gray); }
+  .section-label { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--gold-light); }
+  .section-title { font-family: 'Shippori Mincho', serif; font-size: 24px; font-weight: 600; margin-bottom: 24px; color: var(--charcoal); }
+
+  /* ── INTRO ── */
+  .intro-card { background: var(--warm-white); border: 1px solid var(--gold-light); border-radius: 16px; padding: 40px; display: flex; gap: 32px; align-items: flex-start; position: relative; overflow: hidden; }
+  .intro-card::before { content: ''; position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(ellipse at top right, rgba(201,169,110,0.08) 0%, transparent 70%); }
+  .intro-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--blush), var(--rose)); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 28px; color: white; flex-shrink: 0; box-shadow: 0 4px 20px rgba(196,121,106,0.3); }
+  .intro-name { font-family: 'Shippori Mincho', serif; font-size: 20px; font-weight: 600; color: var(--charcoal); margin-bottom: 4px; }
+  .intro-role { font-size: 12px; color: var(--gold); letter-spacing: 0.12em; margin-bottom: 20px; }
+  .intro-body p { font-size: 14px; color: var(--warm-gray); line-height: 1.9; }
+  .intro-body p + p { margin-top: 12px; }
+  .intro-highlight { margin-top: 20px; padding: 16px 20px; background: rgba(232,196,184,0.18); border-left: 3px solid var(--blush); border-radius: 0 8px 8px 0; font-size: 14px; color: var(--charcoal); line-height: 1.8; }
+
+  /* ── DIAGNOSIS ── */
+  .diagnosis-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .diagnosis-card { border-radius: 14px; padding: 28px 24px; }
+  .diagnosis-card.current    { background: var(--warm-white); border: 1px solid var(--light-gray); }
+  .diagnosis-card.bottleneck { background: #fff8f6; border: 2px solid #e8a090; }
+  .diagnosis-card.next       { background: linear-gradient(135deg, rgba(201,169,110,0.07), rgba(232,196,184,0.1)); border: 1px solid var(--gold-light); }
+  .diagnosis-icon  { font-size: 32px; margin-bottom: 12px; display: block; }
+  .diagnosis-title { font-family: 'Shippori Mincho', serif; font-size: 16px; font-weight: 600; color: var(--charcoal); margin-bottom: 12px; }
+  .diagnosis-card.bottleneck .diagnosis-title { color: #b83c2a; }
+  .diagnosis-card.next .diagnosis-title { color: #8a6d34; }
+  .diagnosis-body { font-size: 13.5px; color: var(--warm-gray); line-height: 1.8; }
+  .diagnosis-body strong { color: var(--charcoal); }
+
+  /* ── KPI ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 16px; margin-bottom: 20px; }
+  .kpi-card { background: var(--warm-white); border: 1px solid var(--light-gray); border-radius: 12px; padding: 24px 20px; text-align: center; position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+  .kpi-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(42,36,32,0.08); }
+  .kpi-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--blush), var(--gold)); }
+  .kpi-card.alert::after { background: linear-gradient(90deg, #f0a090, #c44030); }
+  .kpi-card.gold::after  { background: linear-gradient(90deg, var(--gold-light), var(--gold)); }
+  .kpi-value { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 600; color: var(--deep-rose); line-height: 1; margin-bottom: 8px; }
+  .kpi-card.alert .kpi-value { color: #c04030; }
+  .kpi-card.gold  .kpi-value { color: #8a6d34; }
+  .kpi-unit  { font-size: 14px; color: var(--warm-gray); }
+  .kpi-label { font-size: 12px; color: var(--warm-gray); letter-spacing: 0.05em; margin-top: 4px; }
+  .kpi-note  { font-size: 11px; color: #c04030; margin-top: 6px; }
+  .alert-box { background: rgba(232,160,144,0.1); border: 1px solid rgba(196,121,106,0.3); border-radius: 10px; padding: 16px 20px; font-size: 13.5px; color: var(--charcoal); line-height: 1.8; }
+  .alert-box strong { color: #b83c2a; }
+
+  /* ── UPSELL LADDER ── */
+  .upsell-intro { font-size: 14px; color: var(--warm-gray); margin-bottom: 32px; line-height: 1.8; font-style: italic; }
+  .upsell-ladder { display: flex; flex-direction: column; }
+  .upsell-step { display: grid; grid-template-columns: 52px 1fr auto; gap: 20px; align-items: center; padding: 22px 26px; border-radius: 12px; background: var(--warm-white); border: 1px solid var(--light-gray); transition: box-shadow 0.2s; position: relative; }
+  .upsell-step:not(:last-child) { margin-bottom: 12px; }
+  .upsell-step:not(:last-child)::after { content: '↓'; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 18px; color: var(--gold); z-index: 2; background: var(--cream); padding: 0 8px; line-height: 1.8; }
+  .upsell-step.profit { border-color: rgba(201,169,110,0.5); background: linear-gradient(135deg, rgba(201,169,110,0.05), rgba(232,196,184,0.08)); }
+  .upsell-step.target { border: 2px solid var(--gold); background: linear-gradient(135deg, rgba(201,169,110,0.1), rgba(232,196,184,0.14)); box-shadow: 0 4px 24px rgba(201,169,110,0.18); }
+  .step-number { width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: white; background: linear-gradient(135deg, var(--blush), var(--rose)); }
+  .upsell-step.profit .step-number { background: linear-gradient(135deg, #d4b070, var(--gold)); }
+  .upsell-step.target .step-number { background: linear-gradient(135deg, var(--gold), #906020); }
+  .step-subtitle { font-size: 11px; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 2px; }
+  .step-name { font-family: 'Shippori Mincho', serif; font-size: 17px; font-weight: 600; color: var(--charcoal); }
+  .step-desc { font-size: 13px; color: var(--warm-gray); line-height: 1.7; margin-top: 4px; }
+  .step-ltv { text-align: right; flex-shrink: 0; min-width: 120px; }
+  .step-ltv-value { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--deep-rose); white-space: nowrap; }
+  .upsell-step.profit .step-ltv-value,
+  .upsell-step.target .step-ltv-value { color: #7a5a28; }
+  .step-ltv-label { font-size: 11px; color: var(--warm-gray); letter-spacing: 0.03em; }
+  .step-ltv-multiplier { font-size: 14px; font-weight: 500; color: var(--gold); }
+
+  /* ── SHIFT TABLE ── */
+  .shift-wrap { margin-top: 40px; }
+  .shift-table { width: 100%; border-collapse: collapse; font-size: 13.5px; border-radius: 12px; overflow: hidden; }
+  .shift-table th { padding: 14px 20px; text-align: center; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; }
+  .shift-table th.lbl    { background: var(--light-gray); color: var(--charcoal); }
+  .shift-table th.past   { background: #596070; color: #ddd; }
+  .shift-table th.future { background: var(--navy); color: var(--gold); }
+  .shift-table td { padding: 14px 20px; border-bottom: 1px solid var(--light-gray); vertical-align: middle; }
+  .shift-table td.row-label  { font-weight: 500; color: var(--charcoal); background: rgba(237,232,227,0.4); }
+  .shift-table td.past-val   { color: var(--warm-gray); text-align: center; }
+  .shift-table td.future-val { color: #7a5a28; font-weight: 500; text-align: center; }
+  .shift-table tr:last-child td { border-bottom: none; }
+
+  /* ── TASK TABLE ── */
+  .task-group-title { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; color: var(--charcoal); padding: 10px 0 8px; border-bottom: 1px solid var(--light-gray); margin-bottom: 8px; margin-top: 28px; }
+  .task-group-title:first-of-type { margin-top: 0; }
+  table.task-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.task-table th { text-align: left; font-weight: 500; font-size: 12px; letter-spacing: 0.08em; color: var(--warm-gray); padding: 10px 12px; background: var(--light-gray); }
+  table.task-table td { padding: 11px 12px; border-bottom: 1px solid var(--light-gray); vertical-align: middle; color: var(--charcoal); }
+  table.task-table tr:last-child td { border-bottom: none; }
+  table.task-table tr:hover td { background: rgba(232,196,184,0.06); }
+
+  /* 編集可能セル */
+  .editable {
+    cursor: text;
+    border-radius: 5px;
+    padding: 3px 6px;
+    display: inline-block;
+    min-width: 24px;
+    transition: background 0.15s, outline 0.15s;
+    outline: 1.5px solid transparent;
+    font-size: 13px;
+  }
+  .editable:hover  { background: rgba(201,169,110,0.1); outline-color: var(--gold-light); }
+  .editable:focus  { background: rgba(255,254,249,1); outline-color: var(--gold); }
+  .editable.deadline-cell { color: var(--warm-gray); }
+  .editable.deadline-cell:not(:focus):not(:empty) { font-size: 12.5px; }
+
+  /* 優先度バッジ（クリックで切替） */
+  .pri-badge {
+    display: inline-flex; align-items: center;
+    padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.04em; white-space: nowrap;
+    cursor: pointer; user-select: none;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .pri-badge:hover  { opacity: 0.75; transform: scale(1.04); }
+  .pri-badge:active { transform: scale(0.97); }
+  .pri-badge[data-pri="high"] { background: rgba(196,64,48,0.12); color: #a03020; }
+  .pri-badge[data-pri="mid"]  { background: rgba(201,169,110,0.22); color: #8a6d34; }
+  .pri-badge[data-pri="low"]  { background: rgba(138,158,140,0.2); color: #3a6a3c; }
+  .pri-badge[data-pri="none"] { background: var(--light-gray); color: var(--warm-gray); }
+
+  /* ステータスバッジ */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; letter-spacing: 0.04em; white-space: nowrap; }
+  .badge-done { background: rgba(138,158,140,0.15); color: var(--sage); }
+  .badge-wip  { background: rgba(201,169,110,0.18); color: #8a6d34; }
+  .badge-todo { background: rgba(196,121,106,0.12); color: var(--rose); }
+  .badge-plan { background: var(--light-gray); color: var(--warm-gray); }
+
+  /* ステータスバッジ（クリック切替） */
+  .status-badge {
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .status-badge:hover  { opacity: 0.75; transform: scale(1.05); }
+  .status-badge:active { transform: scale(0.96); }
+
+  /* ── PHASES ── */
+  .phases { display: grid; gap: 16px; }
+  .phase-card { display: grid; grid-template-columns: 120px 1fr; gap: 0; border: 1px solid var(--light-gray); border-radius: 12px; overflow: hidden; background: var(--warm-white); transition: box-shadow 0.2s; }
+  .phase-card:hover { box-shadow: 0 4px 24px rgba(42,36,32,0.07); }
+  .phase-card.active { border-color: var(--gold); border-width: 2px; box-shadow: 0 4px 28px rgba(201,169,110,0.22); }
+  .phase-left { padding: 24px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 8px; border-right: 1px solid var(--light-gray); }
+  .phase-card.done   .phase-left { background: rgba(138,158,140,0.08); }
+  .phase-card.active .phase-left { background: rgba(201,169,110,0.1); }
+  .phase-number { font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--warm-gray); }
+  .phase-status-dot { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .phase-card.done   .phase-status-dot { background: rgba(138,158,140,0.2); }
+  .phase-card.active .phase-status-dot { background: rgba(201,169,110,0.25); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(201,169,110,0.4); } 50% { box-shadow: 0 0 0 8px rgba(201,169,110,0); } }
+  .phase-period { font-size: 11px; color: var(--warm-gray); letter-spacing: 0.04em; }
+  .phase-right  { padding: 24px 28px; }
+  .phase-title  { font-family: 'Shippori Mincho', serif; font-size: 17px; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+  .phase-desc   { font-size: 13.5px; color: var(--warm-gray); line-height: 1.8; }
+  .phase-tags   { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .phase-tag    { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: rgba(201,169,110,0.12); color: #8a6d34; letter-spacing: 0.04em; }
+  .phase-card.active .phase-tag { background: rgba(201,169,110,0.2); }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, var(--blush), var(--light-gray)); }
+  .timeline-item { position: relative; padding: 0 0 28px 24px; }
+  .timeline-item::before { content: ''; position: absolute; left: -21px; top: 8px; width: 10px; height: 10px; border-radius: 50%; background: var(--warm-white); border: 2px solid var(--blush); }
+  .timeline-item.done::before   { background: var(--sage); border-color: var(--sage); }
+  .timeline-item.active::before { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 0 4px rgba(201,169,110,0.2); }
+  .timeline-date { font-size: 11px; letter-spacing: 0.1em; color: var(--warm-gray); margin-bottom: 4px; }
+  .timeline-text { font-size: 14px; color: var(--charcoal); line-height: 1.7; }
+
+  /* ── FOOTER ── */
+  footer { text-align: center; padding: 48px 40px; border-top: 1px solid var(--light-gray); font-size: 12px; color: var(--warm-gray); letter-spacing: 0.1em; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--rose); margin-bottom: 8px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .site-header { padding: 0 20px; }
+    .section { padding: 48px 20px; }
+    .intro-card { flex-direction: column; padding: 28px 24px; }
+    .phase-card { grid-template-columns: 1fr; }
+    .phase-left { border-right: none; border-bottom: 1px solid var(--light-gray); flex-direction: row; gap: 16px; padding: 16px 24px; }
+    .hero { padding: 64px 20px 40px; }
+    .diagnosis-grid { grid-template-columns: 1fr; }
+    .upsell-step { grid-template-columns: 48px 1fr; }
+    .step-ltv { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-brand">
+    とどろきLAクリニック
+    <span>美容部門 Phase 4プロジェクト</span>
+  </div>
+  <div class="header-updated">最終更新：2026年3月16日</div>
+</header>
+
+<!-- NAV -->
+<nav class="nav-bar">
+  <a href="#intro">はじめに</a>
+  <a href="#diagnosis">現在地</a>
+  <a href="#kpi">指標</a>
+  <a href="#strategy">戦略</a>
+  <a href="#tasks">取り組み</a>
+  <a href="#phases">フェーズ</a>
+  <a href="#timeline">スケジュール</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">とどろきLAクリニック 世田谷区 ｜ 2025年10月 開業</div>
+  <h1 class="hero-title">美容部門 <em>Phase 4</em> 移行プロジェクト</h1>
+  <p class="hero-sub">「来院対応」から「1枠あたりの利益最大化」へ</p>
+  <div class="hero-phase-badge">✦ 現在地 : Phase 3（継続期）完了 → Phase 4（単価深化期）移行中 ✦</div>
+</div>
+
+<!-- INTRO -->
+<section class="section" id="intro">
+  <div class="section-label">はじめに</div>
+  <div class="intro-card">
+    <div class="intro-avatar">陽</div>
+    <div class="intro-body">
+      <div class="intro-name">ひまわり</div>
+      <div class="intro-role">美容部門 メイン担当</div>
+      <p>2025年10月の開業以来、脱毛・ピーリングを軸に美容部門を担当しています。開業わずか5ヶ月で月間来院137名・再診率82.5%という強固な顧客基盤を、スタッフのみなさんと一緒に築くことができました。</p>
+      <p>Phase 3（継続期）の基盤は完全に構築済みです。次のステージは「患者数を追う」から「1人あたりのLTVを最大化する」へのシフト。ヒゲ脱毛患者という巨大な資産を、継続美容（ララピール等）へ丁寧に橋渡しすることが、今最も重要なテーマです。</p>
+      <div class="intro-highlight">
+        <strong>このプロジェクトの目的</strong><br>
+        ヒゲ脱毛患者（患者の45%・62名）を「継続美容メニュー（マッサージピール・ララピール）」へ移行させ、1患者あたりのLTVを¥90,000から¥156,000（×1.7倍）へ引き上げます。患者数は増やさず、1枠あたりの粗利額を設計するフェーズへ。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNOSIS -->
+<section class="section" id="diagnosis">
+  <div class="section-label">現在地の診断</div>
+  <div class="section-title">3つの視点で現状を把握する</div>
+  <div class="diagnosis-grid">
+    <div class="diagnosis-card current">
+      <span class="diagnosis-icon">📈</span>
+      <div class="diagnosis-title">現在地</div>
+      <div class="diagnosis-body">月間来院130〜150名で安定。再診率70%超（2月<strong>82.5%</strong>）を達成。Phase 3（継続美容期）の基盤は完全構築済み。</div>
+    </div>
+    <div class="diagnosis-card bottleneck">
+      <span class="diagnosis-icon">⚠️</span>
+      <div class="diagnosis-title">ボトルネック</div>
+      <div class="diagnosis-body">スタッフ3名体制での稼働は<strong>上限</strong>。忙しさが「美容提案の減少」を引き起こすパラドックスが発生。1月のピーリング実施率が13.7%に急落。</div>
+    </div>
+    <div class="diagnosis-card next">
+      <span class="diagnosis-icon">🏆</span>
+      <div class="diagnosis-title">次なる一手</div>
+      <div class="diagnosis-body">Phase 4へ移行。ヒゲ脱毛患者（資産）を「継続美容メニュー（ララピール等）」へ導き、<strong>LTVを1.7倍化</strong>する。</div>
+    </div>
+  </div>
+</section>
+
+<!-- KPI -->
+<section class="section" id="kpi">
+  <div class="section-label">指標</div>
+  <div class="section-title">美容部門 主要KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">137</div>
+      <div class="kpi-unit">名/月</div>
+      <div class="kpi-label">月間来院数（2月実績）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">82.5</div>
+      <div class="kpi-unit">%</div>
+      <div class="kpi-label">再診率（2月実績）</div>
+    </div>
+    <div class="kpi-card alert">
+      <div class="kpi-value">13.7</div>
+      <div class="kpi-unit">%</div>
+      <div class="kpi-label">ピーリング実施率（1月）</div>
+      <div class="kpi-note">▼ 要改善（平均目標 20%超）</div>
+    </div>
+    <div class="kpi-card gold">
+      <div class="kpi-value">×1.7</div>
+      <div class="kpi-unit">倍</div>
+      <div class="kpi-label">LTV目標（対ヒゲ脱毛単独）</div>
+    </div>
+  </div>
+  <div class="alert-box">
+    🚨 <strong>「満枠＝理想」の罠：</strong>完全満枠状態は、利益を生む「相談・追加提案」の余白を奪う。このままでは「忙しいのに儲からない院」に陥るリスクがある。1月のピーリング実施率13.7%急落は、スタッフが忙しすぎた結果の明確なサイン。提案のための「余白」を意図的に設計することが急務。
+  </div>
+</section>
+
+<!-- STRATEGY -->
+<section class="section" id="strategy">
+  <div class="section-label">戦略</div>
+  <div class="section-title">単価深化シフト ― 美容の階段設計</div>
+  <p class="upsell-intro">単価深化とは押し売りではない。患者の悩みのレベルに合わせて「美容の階段」を登ってもらう設計である。</p>
+
+  <div class="upsell-ladder">
+    <div class="upsell-step">
+      <div class="step-number">1</div>
+      <div class="step-body">
+        <div class="step-subtitle">THE ENTRY</div>
+        <div class="step-name">ヒゲ脱毛</div>
+        <div class="step-desc">患者の45%（62名）がここに滞留。現状「ヒゲ→終了→離脱」が多い。この巨大な入口資産を次のステップへ橋渡しすることが最大の収益チャンス。</div>
+      </div>
+      <div class="step-ltv">
+        <div class="step-ltv-value">¥90,000</div>
+        <div class="step-ltv-label">LTV（単独）</div>
+      </div>
+    </div>
+    <div class="upsell-step">
+      <div class="step-number">2</div>
+      <div class="step-body">
+        <div class="step-subtitle">THE HOOK</div>
+        <div class="step-name">サリチル酸ピーリング</div>
+        <div class="step-desc">肌悩みの顕在化。医療寄り・ライト層向け。男性比率44%まで増加済み。単価¥6,600・粗利率88.6%・粗利額¥5,850。</div>
+      </div>
+      <div class="step-ltv">
+        <div class="step-ltv-value">¥116,400</div>
+        <div class="step-ltv-label">LTV（+年4回）</div>
+        <div class="step-ltv-multiplier">×1.3</div>
+      </div>
+    </div>
+    <div class="upsell-step profit">
+      <div class="step-number">3</div>
+      <div class="step-body">
+        <div class="step-subtitle">THE PROFIT ENGINE</div>
+        <div class="step-name">マッサージピール</div>
+        <div class="step-desc">現在ほぼ女性（96%）。男性を引き上げる最大の伸びしろ。単価¥14,300・粗利率81.1%・粗利額¥11,600（サリチル酸の約2倍）。</div>
+      </div>
+      <div class="step-ltv">
+        <div class="step-ltv-value">¥147,200</div>
+        <div class="step-ltv-label">LTV（+年4回）</div>
+        <div class="step-ltv-multiplier">×1.6</div>
+      </div>
+    </div>
+    <div class="upsell-step target">
+      <div class="step-number">4</div>
+      <div class="step-body">
+        <div class="step-subtitle">THE PINNACLE ★ 最終目標</div>
+        <div class="step-name">ララピール</div>
+        <div class="step-desc">高単価・高粗利の最終到達点。単価¥16,500・粗利率90%・粗利額¥14,850（サリチル酸の2.5倍）。ピーリング20人中たった5人がここに移行するだけで、クリニックの利益構造が劇的に改善。</div>
+      </div>
+      <div class="step-ltv">
+        <div class="step-ltv-value">¥156,000</div>
+        <div class="step-ltv-label">LTV（+年4回）</div>
+        <div class="step-ltv-multiplier">×1.7</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="shift-wrap">
+    <div class="section-title" style="font-size:20px;margin-bottom:16px;">戦略的シフト：来院対応から収益最適化へ</div>
+    <table class="shift-table">
+      <thead>
+        <tr>
+          <th class="lbl" style="width:26%">指標</th>
+          <th class="past">これまでのやり方<br><small style="font-weight:300;opacity:0.8;">集客思考 — Phase 1&2</small></th>
+          <th class="future">これからのやり方<br><small style="font-weight:300;color:var(--gold-light);">収益最適化 — Phase 4</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="row-label">追うべき指標</td><td class="past-val">月間来院数</td><td class="future-val">1枠あたりの粗利額・LTV</td></tr>
+        <tr><td class="row-label">注力メニュー</td><td class="past-val">ヒゲ脱毛 / ライト層の獲得</td><td class="future-val">継続美容 / 高単価（マッサージ・ララピール）</td></tr>
+        <tr><td class="row-label">リソース投下先</td><td class="past-val">患者対応</td><td class="future-val">既存患者への提案（診察室での対話）</td></tr>
+        <tr><td class="row-label">稼働のゴール</td><td class="past-val">予約枠を満杯にする</td><td class="future-val">提案のための「余白」を設計する</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TASKS -->
+<section class="section" id="tasks">
+  <div class="section-label">取り組み</div>
+  <div class="section-title">Phase 4 実行タスク一覧</div>
+  <p style="font-size:12.5px;color:var(--warm-gray);margin-bottom:20px;line-height:1.7;">💡 担当・期限はクリックして直接編集できます。優先度・ステータスはクリックで切り替わります。変更は自動保存されます。</p>
+
+  <!-- Group 1 -->
+  <div class="task-group-title">▸ 提案・オペレーション改善</div>
+  <table class="task-table">
+    <thead>
+      <tr>
+        <th style="width:36%">取り組み内容</th>
+        <th style="width:18%">担当</th>
+        <th style="width:12%">優先度</th>
+        <th style="width:14%">ステータス</th>
+        <th style="width:20%">期限</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ヒゲ脱毛患者向けピーリング提案スクリプトの標準化</td>
+        <td><span class="editable" contenteditable="true" data-task="t1" data-field="assignee">ひまわり / 看護師</span></td>
+        <td><span class="pri-badge" data-task="t1" data-pri="high">🔴 高</span></td>
+        <td><span class="badge badge-wip status-badge" data-task="t1" data-status="wip">進行中</span></td>
+        <td><span class="editable deadline-cell" contenteditable="true" data-task="t1" data-field="deadline">3月末</span></td>
+      </tr>
+      <tr>
+        <td>診察室での美容提案フロー整備（問診票改訂含む）</td>
+        <td><span class="editable" contenteditable="true" data-task="t2" data-field="assignee">ひまわり / 院長</span></td>
+        <td><span class="pri-badge" data-task="t2" data-pri="high">🔴 高</span></td>
+        <td><span class="badge badge-todo status-badge" data-task="t2" data-status="todo">未着手</span></td>
+        <td><span class="editable deadline-cell" contenteditable="true" data-task="t2" data-field="deadline">4月中旬</span></td>
+      </tr>
+      <tr>
+        <td>予約枠の「余白」設計（提案時間を確保する枠組み）</td>
+        <td><span class="editable" contenteditable="true" data-task="t3" data-field="assignee">受付 / ひまわり</span></td>
+        <td><span class="pri-badge" data-task="t3" data-pri="high">🔴 高</span></td>
+        <td><span class="badge badge-todo status-badge" data-task="t3" data-status="todo">未着手</span></td>
+        <td><span class="editable deadline-cell" contenteditable="true" data-task="t3" data-field="deadline">4月中旬</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Group 2 -->
+  <div class="task-group-title">▸ 男性客のアップセル施策</div>
+  <table class="task-table">
+    <thead>
+      <tr>
+        <th style="width:36%">取り組み内容</th>
+        <th style="width:18%">担当</th>
+        <th style="width:12%">優先度</th>
+        <th style="width:14%">ステータス</th>
+        <th style="width:20%">期限</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ヒゲ脱毛終了患者へのララピール移行提案設計</td>
+        <td><span class="editable" contenteditable="true" data-task="t4" data-field="assignee">ひまわり</span></td>
+        <td><span class="pri-badge" data-task="t4" data-pri="high">🔴 高</span></td>
+        <td><span class="badge badge-wip status-badge" data-task="t4" data-status="wip">進行中</span></td>
+        <td><span class="editable deadline-cell" contenteditable="true" data-task="t4" data-field="deadline">3月末</span></td>
+      </tr>
+      <tr>
+        <td>マッサージピール男性向けコミュニケーション資料作成</td>
+        <td><span class="editable" contenteditable="true" data-task="t5" data-field="assignee">ひまわり</span></td>
+        <td><span class="pri-badge" data-task="t5" data-pri="mid">🟡 中</span></td>
+        <td><span class="badge badge-todo status-badge" data-task="t5" data-status="todo">未着手</span></td>
+        <td><span class="editable deadline-cell" contenteditable="true" data-task="t5" data-field="deadline">4月末</span></td>
+      </tr>
+      <tr>
+        <td>サリチル酸 → マッサージピール 移行トーク設計</td>
+        <td><span class="editable" contenteditable="true" data-task="t6" data-field="assignee">ひまわり / 看護師</span></td>
+        <td><span class="pri-badge" data-task="t6" data-pri="mid">🟡 中</span></td>
+        <td><span class="badge badge-plan status-badge" data-task="t6" data-status="plan">計画中</span></td>
+        <td><span class="editable deadline-cell" contenteditable="true" data-task="t6" data-field="deadline">5月上旬</span></td>
+      </tr>
+      <tr>
+        <td>メンズ美容提案のLINEシナリオ設計（既存患者向け）</td>
+        <td><span class="editable" contenteditable="true" data-task="t7" data-field="assignee">LINE担当 / ひまわり</span></td>
+        <td><span class="pri-badge" data-task="t7" data-pri="low">🟢 低</span></td>
+        <td><span class="badge badge-plan status-badge" data-task="t7" data-status="plan">計画中</span></td>
+        <td><span class="editable deadline-cell" contenteditable="true" data-task="t7" data-field="deadline">5月上旬</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Group 3 -->
+  <div class="task-group-title">▸ 計測・スタッフ連携</div>
+  <table class="task-table">
+    <thead>
+      <tr>
+        <th style="width:36%">取り組み内容</th>
+        <th style="width:18%">担当</th>
+        <th style="width:12%">優先度</th>
+        <th style="width:14%">ステータス</th>
+        <th style="width:20%">期限</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ピーリング実施率の月次モニタリング体制構築</td>
+        <td><span class="editable" contenteditable="true" data-task="t8" data-field="assignee">ひまわり</span></td>
+        <td><span class="pri-badge" data-task="t8" data-pri="high">🔴 高</span></td>
+        <td><span class="badge badge-wip status-badge" data-task="t8" data-status="wip">進行中</span></td>
+        <td><span class="editable deadline-cell" contenteditable="true" data-task="t8" data-field="deadline">3月末</span></td>
+      </tr>
+      <tr>
+        <td>患者別LTV・メニュー移行率の可視化ダッシュボード</td>
+        <td><span class="editable" contenteditable="true" data-task="t9" data-field="assignee">IT / ひまわり</span></td>
+        <td><span class="pri-badge" data-task="t9" data-pri="mid">🟡 中</span></td>
+        <td><span class="badge badge-todo status-badge" data-task="t9" data-status="todo">未着手</span></td>
+        <td><span class="editable deadline-cell" contenteditable="true" data-task="t9" data-field="deadline">5月末</span></td>
+      </tr>
+      <tr>
+        <td>スタッフへのPhase 4戦略共有・実践研修（月1回）</td>
+        <td><span class="editable" contenteditable="true" data-task="t10" data-field="assignee">ひまわり / 院長</span></td>
+        <td><span class="pri-badge" data-task="t10" data-pri="mid">🟡 中</span></td>
+        <td><span class="badge badge-todo status-badge" data-task="t10" data-status="todo">未着手</span></td>
+        <td><span class="editable deadline-cell" contenteditable="true" data-task="t10" data-field="deadline">4月上旬</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- PHASES -->
+<section class="section" id="phases">
+  <div class="section-label">プロジェクトの流れ</div>
+  <div class="section-title">フェーズ全体像</div>
+  <div class="phases">
+    <div class="phase-card done">
+      <div class="phase-left">
+        <div class="phase-number">Phase 1</div>
+        <div class="phase-status-dot">✅</div>
+        <div class="phase-period">2025.10〜11月</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-title">集客期 ― 患者数を増やす</div>
+        <p class="phase-desc">開業直後の新患獲得フェーズ。ヒゲ脱毛を軸に集客し、月間72名（10月）から順調に拡大。ピーリング率10%未満。</p>
+        <div class="phase-tags"><span class="phase-tag">新患獲得</span><span class="phase-tag">ヒゲ脱毛注力</span><span class="phase-tag">基盤づくり</span></div>
+      </div>
+    </div>
+    <div class="phase-card done">
+      <div class="phase-left">
+        <div class="phase-number">Phase 2</div>
+        <div class="phase-status-dot">✅</div>
+        <div class="phase-period">2025.11〜12月</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-title">導入期 ― ライトメニューで入口を作る</div>
+        <p class="phase-desc">サリチル酸ピーリングを軸に美容メニューの導線を整備。ピーリング率約20%まで引き上げ、再診率66.2%を達成（12月）。</p>
+        <div class="phase-tags"><span class="phase-tag">サリチル酸導入</span><span class="phase-tag">ピーリング率20%</span><span class="phase-tag">再診構造構築</span></div>
+      </div>
+    </div>
+    <div class="phase-card done">
+      <div class="phase-left">
+        <div class="phase-number">Phase 3</div>
+        <div class="phase-status-dot">✅</div>
+        <div class="phase-period">2026.1〜2月</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-title">継続期 ― 顧客が定着する</div>
+        <p class="phase-desc">再診率82.5%（2月）を達成し、月間130〜150名の安定来院を確立。「患者数を追うフェーズ」を完全脱却し、Phase 3の基盤構築が完了。</p>
+        <div class="phase-tags"><span class="phase-tag">再診率82.5%達成</span><span class="phase-tag">顧客資産の蓄積</span><span class="phase-tag">基盤完成</span></div>
+      </div>
+    </div>
+    <div class="phase-card active">
+      <div class="phase-left">
+        <div class="phase-number">Phase 4</div>
+        <div class="phase-status-dot">✨</div>
+        <div class="phase-period">2026.3月〜</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-title">単価深化期 ― 1枠あたりの利益を最大化する</div>
+        <p class="phase-desc">高単価・高粗利メニュー（マッサージピール・ララピール）が安定比率で回り、1人あたりの利益が最大化するフェーズ。ヒゲ脱毛患者（45%）を継続美容へ橋渡しし、LTVを×1.7倍化する。</p>
+        <div class="phase-tags"><span class="phase-tag">LTV×1.7倍化</span><span class="phase-tag">ララピール移行</span><span class="phase-tag">提案余白設計</span><span class="phase-tag">男性美容深化</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section" id="timeline">
+  <div class="section-label">スケジュール</div>
+  <div class="section-title">Phase 4 実行スケジュール</div>
+  <div class="timeline">
+    <div class="timeline-item done"><div class="timeline-date">2025年10月</div><div class="timeline-text">とどろきLAクリニック開業。脱毛・ピーリングメニュー提供開始</div></div>
+    <div class="timeline-item done"><div class="timeline-date">2025年12月</div><div class="timeline-text">月間133名・再診率66.2%達成。顧客資産の蓄積が本格化</div></div>
+    <div class="timeline-item done"><div class="timeline-date">2026年2月</div><div class="timeline-text">月間137名・再診率82.5%。Phase 3基盤完全構築を確認。ヒゲ脱毛患者62名（45%）という資産を確認し、Phase 4移行を決定</div></div>
+    <div class="timeline-item active"><div class="timeline-date">2026年3月（現在）</div><div class="timeline-text">Phase 4キックオフ。ピーリング提案スクリプト作成・ヒゲ脱毛患者へのララピール移行提案設計・ピーリング実施率改善施策を開始（目標：月平均20%超）</div></div>
+    <div class="timeline-item"><div class="timeline-date">2026年4月</div><div class="timeline-text">診察室提案フロー・予約余白設計の実装完了。スタッフPhase 4研修実施。マッサージピール男性向けコミュニケーション資料完成</div></div>
+    <div class="timeline-item"><div class="timeline-date">2026年5月</div><div class="timeline-text">マッサージピール男性比率改善（目標50%超）。LINEシナリオ稼働。LTV追跡ダッシュボード本格稼働</div></div>
+    <div class="timeline-item"><div class="timeline-date">2026年6月（目標）</div><div class="timeline-text">ララピール月間施術10件突破。LTV×1.7倍化の実現 🌸</div></div>
+  </div>
+</section>
+
+<!-- SHARE FAB -->
+<button id="share-fab" title="このページを共有" aria-label="共有">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+  </svg>
+  <span>共有</span>
+</button>
+<div id="share-toast">リンクをコピーしました</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">とどろきLAクリニック</div>
+  美容部門 Phase 4プロジェクト ｜ 担当：ひまわり ｜ 随時更新
+</footer>
+
+<script>
+  // ── 保存・読み込み ──
+  const STORE_KEY = 'todoroki_tasks_v2';
+  function load() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); }
+    catch(e) { return {}; }
+  }
+  function save(data) { localStorage.setItem(STORE_KEY, JSON.stringify(data)); }
+
+  // ── 優先度 ──
+  const PRI_CYCLE  = ['high', 'mid', 'low', 'none'];
+  const PRI_LABELS = { high: '🔴 高', mid: '🟡 中', low: '🟢 低', none: '―' };
+
+  function applyPriority(badge, pri) {
+    badge.dataset.pri = pri;
+    badge.textContent = PRI_LABELS[pri];
+  }
+  function cyclePriority(badge) {
+    const next = PRI_CYCLE[(PRI_CYCLE.indexOf(badge.dataset.pri || 'none') + 1) % PRI_CYCLE.length];
+    applyPriority(badge, next);
+    const d = load(); const id = badge.dataset.task;
+    if (!d[id]) d[id] = {}; d[id].priority = next; save(d);
+  }
+
+  // ── ステータス ──
+  const STA_CYCLE   = ['todo', 'wip', 'plan', 'done'];
+  const STA_LABELS  = { todo: '未着手', wip: '進行中', plan: '計画中', done: '完了' };
+  const STA_CLASSES = { todo: 'badge-todo', wip: 'badge-wip', plan: 'badge-plan', done: 'badge-done' };
+
+  function applyStatus(badge, sta) {
+    badge.dataset.status = sta;
+    badge.textContent = STA_LABELS[sta];
+    badge.classList.remove('badge-todo', 'badge-wip', 'badge-plan', 'badge-done');
+    badge.classList.add(STA_CLASSES[sta]);
+  }
+  function cycleStatus(badge) {
+    const next = STA_CYCLE[(STA_CYCLE.indexOf(badge.dataset.status || 'todo') + 1) % STA_CYCLE.length];
+    applyStatus(badge, next);
+    const d = load(); const id = badge.dataset.task;
+    if (!d[id]) d[id] = {}; d[id].status = next; save(d);
+  }
+
+  // ── 初期化 ──
+  (function init() {
+    const data = load();
+
+    // 優先度バッジ
+    document.querySelectorAll('.pri-badge').forEach(badge => {
+      const id = badge.dataset.task;
+      if (data[id]?.priority) applyPriority(badge, data[id].priority);
+      badge.addEventListener('click', () => cyclePriority(badge));
+    });
+
+    // ステータスバッジ
+    document.querySelectorAll('.status-badge').forEach(badge => {
+      const id = badge.dataset.task;
+      if (data[id]?.status) applyStatus(badge, data[id].status);
+      badge.addEventListener('click', () => cycleStatus(badge));
+    });
+
+    // 編集可能セル（担当・期限）
+    document.querySelectorAll('.editable[contenteditable]').forEach(cell => {
+      const id = cell.dataset.task; const field = cell.dataset.field;
+      if (data[id]?.[field] !== undefined) cell.textContent = data[id][field];
+      cell.addEventListener('blur', () => {
+        const d = load();
+        if (!d[id]) d[id] = {}; d[id][field] = cell.textContent.trim(); save(d);
+      });
+      cell.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); cell.blur(); } });
+    });
+  })();
+</script>
+</body>
+</html>
