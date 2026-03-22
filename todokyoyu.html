@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>チェックリスト & やりたいことリスト</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 16px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .col { display: flex; flex-direction: column; gap: 20px; flex: 1; min-width: 280px; max-width: 420px; }
+    .panel { background: #fff; border-radius: 12px; box-shadow: 0 2px 16px rgba(0,0,0,0.1); width: 100%; padding: 28px; height: fit-content; }
+    .panel-header { margin-bottom: 20px; }
+    h2 { font-size: 1.2rem; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+    .date { font-size: 0.85rem; color: #6b7280; }
+    .accent-daily h2 { color: #4f46e5; }
+    .accent-want h2  { color: #0891b2; }
+    .accent-today h2 { color: #d97706; }
+    .input-row { display: flex; gap: 8px; margin-bottom: 20px; }
+    .input-row input { flex: 1; padding: 9px 12px; border: 1.5px solid #d1d5db; border-radius: 8px; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+    .accent-daily .input-row input:focus { border-color: #4f46e5; }
+    .accent-want  .input-row input:focus { border-color: #0891b2; }
+    .accent-today .input-row input:focus { border-color: #d97706; }
+    .input-row button { padding: 9px 16px; color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+    .accent-daily .input-row button { background: #4f46e5; }
+    .accent-daily .input-row button:hover { background: #4338ca; }
+    .accent-want  .input-row button { background: #0891b2; }
+    .accent-want  .input-row button:hover { background: #0e7490; }
+    .accent-today .input-row button { background: #d97706; }
+    .accent-today .input-row button:hover { background: #b45309; }
+    .item-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1.5px solid #e5e7eb; border-radius: 8px; transition: opacity 0.2s; }
+    .item.done { opacity: 0.45; }
+    .item input[type="checkbox"] { width: 17px; height: 17px; cursor: pointer; flex-shrink: 0; }
+    .accent-daily .item input[type="checkbox"] { accent-color: #4f46e5; }
+    .accent-want  .item input[type="checkbox"] { accent-color: #0891b2; }
+    .accent-today .item input[type="checkbox"] { accent-color: #d97706; }
+    .item .text { flex: 1; font-size: 0.9rem; color: #1a1a1a; word-break: break-word; }
+    .item.done .text { text-decoration: line-through; color: #9ca3af; }
+    .item .delete-btn { background: none; border: none; color: #d1d5db; font-size: 1rem; cursor: pointer; padding: 2px 5px; border-radius: 4px; line-height: 1; transition: color 0.2s; flex-shrink: 0; }
+    .item .delete-btn:hover { color: #ef4444; }
+    .empty { text-align: center; color: #9ca3af; font-size: 0.88rem; padding: 24px 0; }
+    .summary { margin-top: 14px; font-size: 0.82rem; color: #9ca3af; text-align: right; }
+    .badge { display: inline-block; font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-left: 6px; vertical-align: middle; }
+    .accent-daily .badge { background: #ede9fe; color: #4f46e5; }
+    .accent-want  .badge { background: #cffafe; color: #0891b2; }
+    .accent-today .badge { background: #fef3c7; color: #d97706; }
+    .divider-btn { width: 100%; padding: 6px; margin-bottom: 20px; background: none; border: 1.5px dashed #d1d5db; border-radius: 8px; color: #9ca3af; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
+    .divider-btn:hover { border-color: #9ca3af; color: #6b7280; }
+    li.item.divider { display: flex; align-items: center; gap: 4px; height: 16px; background: none; border: none; padding: 0; }
+    li.item.divider hr { flex: 1; border: none; border-top: 1.5px dashed #d1d5db; }
+    li.item.divider .delete-btn { opacity: 0; transition: opacity 0.2s; }
+    li.item.divider:hover .delete-btn { opacity: 1; }
+    .sync-indicator { font-size: 0.75rem; color: #9ca3af; text-align: right; margin-bottom: 8px; min-height: 16px; }
+    .sync-indicator.syncing { color: #f59e0b; }
+    .sync-indicator.synced { color: #10b981; }
+  </style>
+</head>
+<body>
+
+  <div class="col">
+    <!-- 毎日チェックリスト -->
+    <div class="panel accent-daily">
+      <div class="panel-header">
+        <h2>毎日チェックリスト <span class="badge">毎日リセット</span></h2>
+        <div class="date" id="dateLabel"></div>
+      </div>
+      <div class="sync-indicator" id="dailySync"></div>
+      <div class="input-row">
+        <input type="text" id="dailyInput" placeholder="新しい項目を入力..." />
+        <button onclick="addItem('daily')">追加</button>
+      </div>
+      <button class="divider-btn" onclick="addDivider('daily')">― 区切り線を追加 ―</button>
+      <ul class="item-list" id="dailyList"></ul>
+      <div class="summary" id="dailySummary"></div>
+    </div>
+
+    <!-- 今日やりたいことリスト -->
+    <div class="panel accent-today">
+      <div class="panel-header">
+        <h2>今日やりたいことリスト <span class="badge">翌日クリア</span></h2>
+        <div class="date" id="todayDateLabel"></div>
+      </div>
+      <div class="sync-indicator" id="todaySync"></div>
+      <div class="input-row">
+        <input type="text" id="todayInput" placeholder="今日やりたいことを入力..." />
+        <button onclick="addItem('today')">追加</button>
+      </div>
+      <button class="divider-btn" onclick="addDivider('today')">― 区切り線を追加 ―</button>
+      <ul class="item-list" id="todayList"></ul>
+      <div class="summary" id="todaySummary"></div>
+    </div>
+  </div>
+
+  <div class="col">
+    <!-- やりたいことリスト -->
+    <div class="panel accent-want">
+      <div class="panel-header">
+        <h2>やりたいことリスト</h2>
+        <div class="date">完了したものを削除するまで残ります</div>
+      </div>
+      <div class="sync-indicator" id="wantSync"></div>
+      <div class="input-row">
+        <input type="text" id="wantInput" placeholder="やりたいことを入力..." />
+        <button onclick="addItem('want')">追加</button>
+      </div>
+      <button class="divider-btn" onclick="addDivider('want')">― 区切り線を追加 ―</button>
+      <ul class="item-list" id="wantList"></ul>
+      <div class="summary" id="wantSummary"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getFirestore, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCYehoc2lXOaoiR283KIJ9LFgvVFobyI3k",
+      authDomain: "todo-88668.firebaseapp.com",
+      projectId: "todo-88668",
+      storageBucket: "todo-88668.firebasestorage.app",
+      messagingSenderId: "737788355638",
+      appId: "1:737788355638:web:95c6ff435631ac9af6a497"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const _d = new Date();
+    const DATE_KEY = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,'0')}-${String(_d.getDate()).padStart(2,'0')}`;
+    const TODAY_STR = _d.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
+
+    document.getElementById('dateLabel').textContent = TODAY_STR;
+    document.getElementById('todayDateLabel').textContent = TODAY_STR;
+
+    // ── データ管理 ──
+    const state = { daily: [], today: [], want: [] };
+    let ignoreNext = { daily: false, today: false, want: false };
+
+    function esc(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function setSync(type, status) {
+      const el = document.getElementById(type + 'Sync');
+      if (status === 'syncing') { el.className = 'sync-indicator syncing'; el.textContent = '同期中...'; }
+      else if (status === 'synced') { el.className = 'sync-indicator synced'; el.textContent = '✓ 同期済み'; setTimeout(() => { el.textContent = ''; el.className = 'sync-indicator'; }, 2000); }
+    }
+
+    async function save(type, tasks) {
+      setSync(type, 'syncing');
+      ignoreNext[type] = true;
+      const docData = { tasks, updatedAt: Date.now() };
+      if (type === 'daily') docData.date = DATE_KEY;
+      if (type === 'today') docData.date = DATE_KEY;
+      await setDoc(doc(db, 'lists', type), docData);
+      setSync(type, 'synced');
+    }
+
+    function render(type) {
+      const tasks = state[type];
+      const listEl = document.getElementById(type + 'List');
+      const summaryEl = document.getElementById(type + 'Summary');
+      const real = tasks.filter(t => !t.divider);
+      listEl.innerHTML = tasks.length === 0
+        ? '<li class="empty">項目がありません</li>'
+        : tasks.map(t => t.divider
+            ? `<li class="item divider"><hr /><button class="delete-btn" onclick="window._del('${type}',${t.id})" title="削除">&#x2715;</button></li>`
+            : `<li class="item ${t.done ? 'done' : ''}">
+                <input type="checkbox" ${t.done ? 'checked' : ''} onchange="window._toggle('${type}',${t.id})" />
+                <span class="text">${esc(t.text)}</span>
+                <button class="delete-btn" onclick="window._del('${type}',${t.id})" title="削除">&#x2715;</button>
+               </li>`).join('');
+      const done = real.filter(t => t.done).length;
+      const unit = type === 'want' ? '件達成' : '件完了';
+      summaryEl.textContent = real.length > 0 ? `${done} / ${real.length} ${unit}` : '';
+    }
+
+    window._toggle = (type, id) => {
+      const t = state[type].find(t => t.id === id);
+      if (t) { t.done = !t.done; render(type); save(type, state[type]); }
+    };
+    window._del = (type, id) => {
+      state[type] = state[type].filter(t => t.id !== id);
+      render(type); save(type, state[type]);
+    };
+
+    window.addItem = (type) => {
+      const input = document.getElementById(type + 'Input');
+      const text = input.value.trim();
+      if (!text) return;
+      state[type].push({ id: Date.now(), text, done: false });
+      input.value = '';
+      render(type); save(type, state[type]);
+    };
+
+    window.addDivider = (type) => {
+      state[type].push({ id: Date.now(), divider: true });
+      render(type); save(type, state[type]);
+    };
+
+    // Enterキー対応
+    ['daily', 'today', 'want'].forEach(type => {
+      let lastEnter = false;
+      document.getElementById(type + 'Input').addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (lastEnter) { addItem(type); lastEnter = false; }
+          else lastEnter = true;
+        } else lastEnter = false;
+      });
+    });
+
+    // ── Firestoreリアルタイム同期 ──
+    function setupListener(type) {
+      onSnapshot(doc(db, 'lists', type), (snap) => {
+        if (ignoreNext[type]) { ignoreNext[type] = false; return; }
+        if (!snap.exists()) { render(type); return; }
+        const data = snap.data();
+
+        // 毎日リセット
+        if ((type === 'daily' || type === 'today') && data.date !== DATE_KEY) {
+          const tasks = type === 'daily'
+            ? (data.tasks || []).map(t => ({ ...t, done: false }))
+            : [];
+          state[type] = tasks;
+          save(type, tasks);
+        } else {
+          state[type] = data.tasks || [];
+        }
+        render(type);
+      });
+    }
+
+    setupListener('daily');
+    setupListener('today');
+    setupListener('want');
+  </script>
+</body>
+</html>
